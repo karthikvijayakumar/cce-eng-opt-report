@@ -1,0 +1,633 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Convergence of gradient descent &#8212; Accelerated gradient descent and related algorithms</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lower bounds on convergence" href="lower_bounds_convergence.html" />
+    <link rel="prev" title="Gradient descent" href="gradient_descent.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/gradient-ascent-logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">Accelerated gradient descent and related algorithms</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="gradient_descent.html">
+   Gradient descent
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Convergence of gradient descent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lower_bounds_convergence.html">
+   Lower bounds on convergence
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="momentum.html">
+   Momentum
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="variations.html">
+   Variations of accelerated gradient descent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="implementations.html">
+   Implementations
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        <a class="dropdown-buttons"
+            href="../_sources/docs/convergence_gd.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download notebook file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/docs/convergence_gd.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/docs/convergence_gd.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#lipschitz-continuity">
+   Lipschitz continuity
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#strong-convexity">
+   Strong convexity
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convergence-under-lipschitz-continuity">
+   Convergence under Lipschitz continuity
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#monotonicity-of-gradient">
+     Monotonicity of gradient
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#first-order-upper-bound">
+     First order upper bound
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#convergence-of-successive-iterates">
+     Convergence of successive iterates
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#gradient-descent-is-a-descent-method">
+     Gradient descent is a descent method
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#convergence-rate-under-lipschitz-continuity">
+     Convergence rate under Lipschitz continuity
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convergence-under-lipschitz-continuity-and-strong-convexity">
+   Convergence under Lipschitz continuity and strong convexity
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="convergence-of-gradient-descent">
+<span id="convergence-gradient-descent"></span><h1>Convergence of gradient descent<a class="headerlink" href="#convergence-of-gradient-descent" title="Permalink to this headline">¶</a></h1>
+<p>A general analysis on the convergence of gradient descent can prove to be very difficult. We will focus on the case where <span class="math notranslate nohighlight">\(\nabla f\)</span> shows one or both of the following proerties</p>
+<ol class="simple">
+<li><p>Lipschitz continuous</p></li>
+<li><p>Strong convexity</p></li>
+</ol>
+<div class="section" id="lipschitz-continuity">
+<h2>Lipschitz continuity<a class="headerlink" href="#lipschitz-continuity" title="Permalink to this headline">¶</a></h2>
+<p>A function <span class="math notranslate nohighlight">\(f : \mathbb{R}^{n} -&gt; \mathbb{R}\)</span> is Lipschitz continuosu with Lipschitz constant <span class="math notranslate nohighlight">\(L\)</span> if for any <span class="math notranslate nohighlight">\(x,y \epsilon \mathbb{R}^{n}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+    \Vert f(y) - f(x) \Vert_{2} &lt;= L \Vert y-x \Vert_{2}
+\]</div>
+</div>
+<div class="section" id="strong-convexity">
+<h2>Strong convexity<a class="headerlink" href="#strong-convexity" title="Permalink to this headline">¶</a></h2>
+<p>A differentiable function <span class="math notranslate nohighlight">\(f : \mathbb{R}^{n} -&gt; \mathbb{R}\)</span> is <span class="math notranslate nohighlight">\(\mu\)</span> strongly convex if for any <span class="math notranslate nohighlight">\(x,y \epsilon \mathbb{R}^{n}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+    f(y) \geq f(x) + \nabla f(x)^{T} (y-x) + \frac{\mu}{2} \Vert y-x \Vert_{2}^{2}
+\]</div>
+<p>This is equivalent to</p>
+<div class="math notranslate nohighlight">
+\[
+    \left&lt; \nabla f(x) - \nabla f(y), x-y \right&gt; \geq \alpha \Vert y-x \Vert_{2}^{2}
+\]</div>
+<p><em>Note</em></p>
+<p>Compare the first condition above to the first order condition for convex functions</p>
+<div class="math notranslate nohighlight">
+\[
+    f(y) \geq f(x) + \nabla f(x)^{T}(y-x)
+\]</div>
+<p>The additional term gives a stronger lower bound ( probably which lead to the name strong convexity )</p>
+</div>
+<div class="section" id="convergence-under-lipschitz-continuity">
+<h2>Convergence under Lipschitz continuity<a class="headerlink" href="#convergence-under-lipschitz-continuity" title="Permalink to this headline">¶</a></h2>
+<p>In this section we prove that gradient descent converges in <span class="math notranslate nohighlight">\(O(1/\epsilon)\)</span> steps to an <span class="math notranslate nohighlight">\(\epsilon\)</span> approximate solution when <span class="math notranslate nohighlight">\(\nabla f\)</span> is Lipschitz continuous</p>
+<p>We need a few results to help us with the proof</p>
+<div class="section" id="monotonicity-of-gradient">
+<h3>Monotonicity of gradient<a class="headerlink" href="#monotonicity-of-gradient" title="Permalink to this headline">¶</a></h3>
+<p id="id1"><strong>Lemma 1.1</strong></p>
+<p>A differentiable function <span class="math notranslate nohighlight">\(f : \mathbb{R}^{n} -&gt; \mathbb{R}\)</span> is convex iff
+$<span class="math notranslate nohighlight">\(
+    (\nabla f(y) - \nabla f(x))^{T}(y-x) &gt;= 0
+\)</span>$</p>
+<p><strong>Proof</strong></p>
+<p>Part 1: Convexity =&gt; <span class="math notranslate nohighlight">\((\nabla f(y) - \nabla f(x))^{T}(y-x) &gt;= 0\)</span></p>
+<p>If f is convex by first order condition</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{eqnarray}
+f(x) \geq f(y) + \nabla f(y)^{T}(x-y) \\
+f(y) \geq f(x) + \nabla f(x)^{T}(y-x)
+\end{eqnarray}
+\end{split}\]</div>
+<p>Adding the two equations above gives us
+$<span class="math notranslate nohighlight">\(
+    \left( \nabla f(y)^{T} - \nabla f(x)^{T} \right) \left( y-x \right) \geq 0
+\)</span>$</p>
+<p>Part 2: <span class="math notranslate nohighlight">\((\nabla f(y) - \nabla f(x))^{T}(y-x) &gt;= 0\)</span> =&gt; Convexity</p>
+<p>Consider the restriction of the function f -&gt; <span class="math notranslate nohighlight">\(g_{a,b}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+    g_{a,b}(\alpha): [0,1] -&gt; \mathbb{R}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+    g_{a,b}(\alpha) := f(\alpha a + (1-\alpha)b)
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+    g'_{a,b}(\alpha) = \nabla f(\alpha a + (1-\alpha)b)^{T}(a-b)
+\]</div>
+<p>For any <span class="math notranslate nohighlight">\(\alpha \epsilon [0,1]\)</span> we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+g'_{a,b}(\alpha) - g'_{a,b}(0) &amp;= \left( \nabla f(\alpha a + (1-\alpha)b) \right) (a-b) \\
+    &amp;= \frac{1}{\alpha} \left( \nabla f(\alpha a + (1-\alpha)b) \right) \left( \alpha a - (1-\alpha)b - b \right) \\
+    &amp;\geq 0 (  since  \nabla f(y) - \nabla f(x))^{T}(y-x) &gt;= 0 ) \\
+\end{align}
+\end{split}\]</div>
+<p>Writing <span class="math notranslate nohighlight">\(f(x)\)</span> in terms of the restriction and using the above inequality gives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}    
+    f(x) &amp;= g_{xy}(1) \\
+    &amp;= g_{xy}(0) + \int_{0}^{1} g'_{xy}(\alpha)d\alpha \\
+    &amp;\geq g_{xy}(0) + \int_{0}^{1} g'_{xy}(0)d\alpha \\
+    &amp;\geq g_{xy}(0) + g'_{xy}(0) \\
+    &amp;=f(y) + \nabla f(y)^{T}(x-y)
+\end{align}
+\end{split}\]</div>
+<p>This is the first order condition for convexity =&gt; f is convex</p>
+</div>
+<div class="section" id="first-order-upper-bound">
+<h3>First order upper bound<a class="headerlink" href="#first-order-upper-bound" title="Permalink to this headline">¶</a></h3>
+<p id="id2"><strong>Theorem 1.1</strong></p>
+<p>If the gradient of a function is L-Lipschitz continuous with Lipschitz constant L</p>
+<div class="math notranslate nohighlight">
+\[
+    \Vert \nabla f(y) - \nabla f(x) \Vert_{2} &lt;= \Vert y-x \Vert_{2}
+\]</div>
+<p>then for any <span class="math notranslate nohighlight">\(x \epsilon \mathbb{R}^{n}\)</span> the following holds</p>
+<div class="math notranslate nohighlight">
+\[
+    f(y) &lt;= f(x) + \nabla f(x)^{T}(y-x) + \frac{L}{2}  \Vert y-x \Vert_{2}^{2}
+\]</div>
+<p><strong>Proof</strong></p>
+<p>Consider the function</p>
+<div class="math notranslate nohighlight">
+\[
+    g(x) := \frac{L}{2} x^{T}x - f(x)
+\]</div>
+<p>For g</p>
+<div class="math notranslate nohighlight">
+\[
+    \nabla g(x) = Lx - \nabla f(x)
+\]</div>
+<p>For <span class="math notranslate nohighlight">\(x,y \epsilon \mathbb{R}^{n}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+    \nabla g(y) - \nabla g(x) &amp;= Ly - \nabla f(x) - LX + \nabla f(x) \\
+    &amp;= L(y-x) - \left( \nabla f(y) - \nabla f(x) \right) \\
+    \left( \nabla g(y) - \nabla g(x) \right )^{T}(y-x) &amp;= L \Vert y-x \Vert_{2}^{2} - \left( \nabla f(y) - \nabla f(x) \right)^{T}(y-x) \\
+\end{align}
+\end{split}\]</div>
+<p>By Cauchy Schwarz inequality</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+    \left&lt; \nabla f(y) - \nabla f(x), y-x \right&gt; &amp; \leq \Vert \nabla f(y) - \nabla f(x) \Vert \Vert y-x \Vert \\
+    &amp; \leq L \Vert y-x \Vert^{2}
+\end{align}
+\end{split}\]</div>
+<p>This implies</p>
+<div class="math notranslate nohighlight">
+\[
+    \left( \nabla g(y) - \nabla g(x) \right)^{T} (y-x) \geq 0
+\]</div>
+<p>The above implies g is convex by the monotonicity of the gradient lemma proved above</p>
+<p>By first order condition for convexity</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+    \frac{L}{2} y^{T}y - f(y) &amp;= g(y) \\
+    &amp;\geq g(x) + \nabla g(x)^{T}(y-x) \\
+    &amp;= \frac{L}{2} x^{T}x - f(x) +(Lx - \nabla f(x))^{T}(y-x)
+\end{align}
+\end{split}\]</div>
+<p>This implies</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+    f(y) &amp;\leq f(x) + \nabla f(x)^{T}(y-x) + \frac{L}{2}(y^{T}y - x^{T}x) - Lx^{T}(y-x) \\
+    &amp;\leq  f(x) + \nabla f(x)^{T}(y-x) + \frac{L}{2}(y^{T}y - x^{T}x) - 2x^{T}y + 2x^{T}x) \\
+    &amp;= f(x) + \nabla f(x)^{T}(y-x) + \frac{L}{2}(y^{T}y + x^{T}x) - 2x^{T}y) \\
+    &amp;= f(x) + \nabla f(x)^{T}(y-x) + \frac{L}{2}(y-x)^{T}(y-x) \\
+    &amp;= f(x) + \nabla f(x)^{T}(y-x) + \frac{L}{2} \Vert y-x \Vert_{2}^{2}
+\end{align}
+\end{split}\]</div>
+<p>Hence proved.</p>
+</div>
+<div class="section" id="convergence-of-successive-iterates">
+<h3>Convergence of successive iterates<a class="headerlink" href="#convergence-of-successive-iterates" title="Permalink to this headline">¶</a></h3>
+<p id="id3"><strong>Theorem 1.2</strong></p>
+<p>Let <span class="math notranslate nohighlight">\(x_{i}\)</span> be the ith iteration of gradient descent and <span class="math notranslate nohighlight">\(\alpha_{i} &gt;= 0\)</span>. if <span class="math notranslate nohighlight">\(\nabla f\)</span> is L-Lipschitz continuous then</p>
+<div class="math notranslate nohighlight">
+\[
+    f(x_{k+1}) &lt;= f(x_{k}) - \alpha_{k} ( 1 - \frac{\alpha_{k}L}{2} ) \Vert \nabla f(x_{k}) \Vert_2^{2}
+\]</div>
+<p><strong>Proof</strong></p>
+<p>Applying the first order upper bound from theorem 1.1 we have</p>
+<div class="math notranslate nohighlight">
+\[
+    f(x_{k+1}) &lt;= f(x_{k}) + \nabla f(x_{k})^{T}(x_{k+1} - x_{k}) + \frac{L}{2} \Vert x_{k+1} - x_{k} \Vert_{2}^{2}
+\]</div>
+<p>In gradient descent the iterates are computed as
+$<span class="math notranslate nohighlight">\(
+    x_{k+1} = x_{k} - \alpha_{k} \nabla f(x_{k})
+\)</span>$</p>
+<p>This implies
+$<span class="math notranslate nohighlight">\(
+  x_{k+1} - x_{k} = - \alpha_{k} \nabla f(x_{k})
+\)</span>$</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+    f(x_{k+1}) &amp;\leq f(x_{k}) + \nabla f(x_{k})^{T}(-\alpha_{k}\nabla f(x_{k})) + \frac{L}{2}\alpha_{k}^{2} \Vert \nabla f(x_{k}) \Vert_{2}^{2} \\
+    &amp;\leq f(x_{k}) + \alpha_{k} \Vert \nabla f(x_{k}) \Vert_{2}^{2} + \frac{L}{2}\alpha_{k}^{2} \Vert \nabla f(x_{k}) \Vert_{2}^{2} \\
+    &amp;\leq f(x_{k}) + \alpha_{k} \left( 1- \frac{\alpha_{k} L}{2} \right) \Vert \nabla f(x_{k}) \Vert_{2}^{2} \\
+\end{align}
+\end{split}\]</div>
+<p>Hence proved</p>
+</div>
+<div class="section" id="gradient-descent-is-a-descent-method">
+<h3>Gradient descent is a descent method<a class="headerlink" href="#gradient-descent-is-a-descent-method" title="Permalink to this headline">¶</a></h3>
+<p id="id4"><strong>Corollary 1.1</strong> Gradient descent is a descent method if <span class="math notranslate nohighlight">\(\alpha_{k} &lt;= \frac{1}{L}\)</span></p>
+<p><strong>Proof</strong></p>
+<p>Substituting <span class="math notranslate nohighlight">\(\alpha_{k} \leq \frac{1}{L}\)</span> into the inequality from the above theorem gives us the result</p>
+</div>
+<div class="section" id="convergence-rate-under-lipschitz-continuity">
+<h3>Convergence rate under Lipschitz continuity<a class="headerlink" href="#convergence-rate-under-lipschitz-continuity" title="Permalink to this headline">¶</a></h3>
+<p id="convergence-rate-under-lipschitz"><strong>Theorem 1.3 ( Main result )</strong> : Assume</p>
+<ul class="simple">
+<li><p>f is convex</p></li>
+<li><p><span class="math notranslate nohighlight">\(\nabla f\)</span> is L-Lipschitzz continuous</p></li>
+<li><p>There exists a point <span class="math notranslate nohighlight">\(x^{*}\)</span> at which f achieves a finite minimum</p></li>
+</ul>
+<p>If we setup the step size of gradient descent <span class="math notranslate nohighlight">\(\alpha_{k} = \alpha = \frac{1}{L}\)</span> for every iteration then</p>
+<div class="math notranslate nohighlight">
+\[
+    f(x_{k}) - f(x_{*}) &lt;= \frac{ \Vert x_{0}-x_{*} \Vert^{2}}{2\alpha k}
+\]</div>
+<p><strong>Proof</strong></p>
+<p>By first order characterisation of convexity</p>
+<div class="math notranslate nohighlight">
+\[
+    f(x_{k-1}) + \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) \leq f(x_{*})
+\]</div>
+<p>Using the previous corollary</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+    f(x_{k}) &amp; \leq f(x_{k-1}) - \frac{\alpha_{k-1}}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} \\
+    f(x_{k-1}) &amp; \geq f(x_{k}) + \frac{\alpha_{k-1}}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2}
+\end{align}
+\end{split}\]</div>
+<p>Combining the two</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+f(x_{k}) + \frac{\alpha_{k-1}}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} + \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) \leq f(x_{*}) \\
+f(x_{k}) - f(x_{*}) \leq \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) - \frac{\alpha_{k-1}}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} \\
+\end{align}
+\end{split}\]</div>
+<p>Lets expand the RHS term</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+    RHS &amp;= \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) - \frac{\alpha_{k-1}}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} \\
+    &amp;= \frac{1}{2\alpha} \left( 2\alpha \nabla f(x_{k-1})^{T}(x_{k-1} - x_{*}) - \alpha^{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2}  \right) \\
+    &amp;= \frac{1}{2\alpha} \left( \Vert x_{k-1} - x_{*} \Vert_{2}^{2} - \Vert x_{k-1} - x_{*} \Vert_{2}^{2} + 2\alpha \nabla f(x_{k-1})^{T}(x_{k-1} - x_{*}) -\alpha^{2} \Vert \nabla f(x_{k-1})\Vert_{2}^{2} \right) \\
+    &amp;= \frac{1}{2\alpha} \left( \Vert x_{k-1} - x_{*} \Vert_{2}^{2} - \Vert x_{k-1} - x_{*} - \alpha \nabla f(x_{k-1}) \Vert_{2}^{2}  \right) \\
+    &amp;= \frac{1}{2\alpha} \left( \Vert x_{k-1}-x_{*} \Vert_{2}^{2} - \Vert x_{k}-x_{*} \Vert_{2}^{2} \right)
+\end{align}
+\end{split}\]</div>
+<p>Hence we have
+$<span class="math notranslate nohighlight">\(
+    f(x_{k}) - f(x_{*}) \leq \frac{1}{2\alpha} \left( \Vert x_{k-1}-x_{*} \Vert_{2}^{2} - \Vert x_{k}-x_{*} \Vert_{2}^{2} \right)
+\)</span>$</p>
+<p>By previous corollary we know that <span class="math notranslate nohighlight">\(\left( f(x_{k}) \right)_{k=1}^{\inf}\)</span> is decreasing, hence</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+    f(x_{k}) &amp; \leq \sum_{i=1}^{k} \frac{1}{k} f(x_{i}) \\
+    f(x_{k}) - f(x_{*}) &amp; \leq \left[  \sum_{i=1}^{k} \frac{1}{k} f(x_{i}) \right]  - f(x_{*}) \\
+    &amp;= \frac{1}{k} \left( \sum_{i=1}^{k} f(x_{i}) -f(x_{*}) \right) \\
+    &amp;= \frac{1}{2 \alpha_{min} k} \left( \Vert x_{0}-x_{*} \Vert_{2}^{2} - \Vert x_{k}-x_{*} \Vert_{2}^{2} \right) \\
+    &amp; \leq \frac{\Vert x_{0} - x_{*} \Vert_{2}^{2}}{2 \alpha_{min} k}
+\end{align}
+\end{split}\]</div>
+<p>Hence we have</p>
+<div class="math notranslate nohighlight">
+\[
+    f(x_{k}) - f(x_{*}) \leq \frac{\Vert x_{0} - x_{*} \Vert_{2}^{2}}{2 \alpha_{min} k}
+\]</div>
+<p>Theorem 1.3 shows that if we know the Lipschitz constant of the gradient then we can choose a fixed step <span class="math notranslate nohighlight">\(\alpha\)</span> to get arbitrarily close to the minimum. In particular to get an <span class="math notranslate nohighlight">\(\epsilon\)</span> approximate solution we would need <span class="math notranslate nohighlight">\(O(\frac{1}{\epsilon})\)</span> steps</p>
+<p>In practice we may not know the Lipschitz constant of a function analytically. In which case there are 2 ways to proceed forward:</p>
+<ol class="simple">
+<li><p>Find an upper bound for the Lipschitz constant if possible</p></li>
+<li><p>Use backtracking line search ( Armijo rule  )
+We can show that bactracking line search is capable of hitting the <span class="math notranslate nohighlight">\(\alpha_{k} &lt;= \frac{1}{L}\)</span> condition</p></li>
+</ol>
+<p>For the latter we have the following results</p>
+<p><strong>Lemma 1.2</strong> Lower bound on step size with backtracking search</p>
+<p>If the gradient of a function <span class="math notranslate nohighlight">\(f: \mathbb{R}^{n} -&gt; \mathbb{R}\)</span> is Lipschitz continuous with Lipschitz constant L, the step size obtained by backtracking line search with <span class="math notranslate nohighlight">\(\eta = 0.5\)</span> satisfies
+$<span class="math notranslate nohighlight">\(
+    \alpha_{k} &gt;= \alpha_{min} := min \left( \alpha^{0}, \frac{\beta}{L} \right) 
+\)</span>$</p>
+<p><strong>Theorem 1.4</strong> Convergence with backtracking line search</p>
+<p>If f is convex and <span class="math notranslate nohighlight">\(\nabla f\)</span> is L-Lipschitz continuous, gradient descent with backtracking line search produces a sequence of points that satisfy</p>
+<div class="math notranslate nohighlight">
+\[
+    f(x_{k}) - f(x_{*}) &lt;= \frac{\Vert x_{0}-x_{*} \Vert_{2}^{2}}{2\alpha_{min}k}
+\]</div>
+<p>We skip the proofs of the above theorem and lemma. They are available in <a class="reference external" href="https://cims.nyu.edu/~cfgranda/pages/OBDA_fall17/notes/convex_optimization.pdf">Section 3.2 of CF.Granda’s lecture notes</a></p>
+</div>
+</div>
+<div class="section" id="convergence-under-lipschitz-continuity-and-strong-convexity">
+<h2>Convergence under Lipschitz continuity and strong convexity<a class="headerlink" href="#convergence-under-lipschitz-continuity-and-strong-convexity" title="Permalink to this headline">¶</a></h2>
+<p><strong>Theorem 1.5</strong></p>
+<p>Let f be L-smooth and <span class="math notranslate nohighlight">\(\mu\)</span> strongly convex. From a given <span class="math notranslate nohighlight">\(x_{0} \epsilon \mathbb{R}^{n}\)</span> and <span class="math notranslate nohighlight">\(0 \lt \alpha \leq \frac{1}{L}\)</span>, the iterates</p>
+<div class="math notranslate nohighlight">
+\[
+    x_{t+1} = x_{t} - \alpha \nabla f(x_{t})
+\]</div>
+<p>converge according to</p>
+<div class="math notranslate nohighlight">
+\[
+    \Vert x_{t+1} - x_{*} \Vert_{2}^{2} \leq (1-\alpha \mu)^{t+1} \Vert x^{0} - x^{*} \Vert_{2}^{2}    
+\]</div>
+<p>In particular when <span class="math notranslate nohighlight">\(\alpha = \frac{1}{L}\)</span>, the iterates converge linearly with a rate of <span class="math notranslate nohighlight">\(\frac{\mu}{L}\)</span></p>
+<p>We skip the proof here. It can be found in <a class="reference external" href="https://gowerrobert.github.io/pdf/M2_statistique_optimisation/grad_conv.pdf">Robert Gower’s notes</a></p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./docs"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="gradient_descent.html" title="previous page">Gradient descent</a>
+    <a class='right-next' id="next-link" href="lower_bounds_convergence.html" title="next page">Lower bounds on convergence</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Karthik Vijayakumar<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

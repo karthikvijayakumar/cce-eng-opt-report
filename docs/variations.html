@@ -1,0 +1,440 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Variations of accelerated gradient descent &#8212; Accelerated gradient descent and related algorithms</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Implementations" href="implementations.html" />
+    <link rel="prev" title="Momentum" href="momentum.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/gradient-ascent-logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">Accelerated gradient descent and related algorithms</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="gradient_descent.html">
+   Gradient descent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="convergence_gd.html">
+   Convergence of gradient descent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lower_bounds_convergence.html">
+   Lower bounds on convergence
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="momentum.html">
+   Momentum
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Variations of accelerated gradient descent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="implementations.html">
+   Implementations
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        <a class="dropdown-buttons"
+            href="../_sources/docs/variations.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download notebook file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/docs/variations.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/docs/variations.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#adagrad">
+   Adagrad
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#adadelta">
+   Adadelta
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#adam">
+   Adam
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="variations-of-accelerated-gradient-descent">
+<span id="variations"></span><h1>Variations of accelerated gradient descent<a class="headerlink" href="#variations-of-accelerated-gradient-descent" title="Permalink to this headline">¶</a></h1>
+<p>We will focus on 3 variations/improvements of nesterov accelerated gradient descent in this section</p>
+<ol class="simple">
+<li><p>Adagrad</p></li>
+<li><p>Adadelta</p></li>
+<li><p>Adam</p></li>
+</ol>
+<p>Each of these 3 try to sequentially improve upon on some aspects from the previous one</p>
+<div class="section" id="adagrad">
+<h2>Adagrad<a class="headerlink" href="#adagrad" title="Permalink to this headline">¶</a></h2>
+<p>Adagrad tries to tackle the issue of needing seperate learning rates for different parameters by using a diagonal matrix for a step size instead of a scalar. Note that we saw the use of diagonal matrices in the definition of first order methods previously.</p>
+<p>Understandably just using a diagonal matrix makes it more difficult for the user in that there are more parameters to set. To tackle this adagrad builds the diagonal matrices as the inverse of the root mean square of the sum of gradients seen so far. Directions where the gradients are large will get slowed down and places where the gradient has become tiny could get emphasized.</p>
+<p><em>Algorithm ( for the i’th component )</em></p>
+<ol class="simple">
+<li><p>Compute <span class="math notranslate nohighlight">\(g_{t,i} = \nabla_{x} f(x_{t})_{i}\)</span>, the gradient for the i’th component</p></li>
+<li><p>Update the i’th component of the iterate <span class="math notranslate nohighlight">\(x_{t+1,i}\)</span> using
+$<span class="math notranslate nohighlight">\(
+ x_{t+1,i} = x_{t,i} - \frac{\eta}{\sqrt{ \sum_{j=1}^{t} g_{j,i}^{2} + \epsilon}} g_{t,i}
+\)</span>$</p></li>
+</ol>
+<p>Above we observe that each component has a differently scaled step size at each iteration. The scaling is based on how the gradient for that parameter have been in the past.</p>
+<p>The <span class="math notranslate nohighlight">\(\epsilon\)</span> above is a very small number ( typically <span class="math notranslate nohighlight">\(10^{-8}\)</span> ) introduced to prevent division by zero errors</p>
+<p><em>Algorithm ( vectorized for all components )</em></p>
+<ol class="simple">
+<li><p>Compute <span class="math notranslate nohighlight">\(g_{t} = \nabla_{x} f(x_{t})\)</span>, the gradient.</p></li>
+<li><p>Set <span class="math notranslate nohighlight">\(G_{t}\)</span> to be an nxn diagonal matrix where</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+    \left( G_{t} \right)_{i,i} = \sum_{j=1}^{t} g_{j,i}^{2}
+\]</div>
+<ol class="simple">
+<li><p>Compute the iterate <span class="math notranslate nohighlight">\(x_{t+1,i}\)</span> using
+$<span class="math notranslate nohighlight">\(
+ x_{t+1} = x_{t} - \eta \left( \sqrt{ G_{t} + \epsilon} \right)^{-1} g_{t}
+\)</span>$</p></li>
+</ol>
+<p><span class="math notranslate nohighlight">\(\eta\)</span> above is the learning rate as in vanilla gradient descent</p>
+</div>
+<div class="section" id="adadelta">
+<h2>Adadelta<a class="headerlink" href="#adadelta" title="Permalink to this headline">¶</a></h2>
+<p>One of the drawbacks of Adagrad was that the <span class="math notranslate nohighlight">\(G_{t}\)</span> was accumalating gradients and could get large after severla iterations making the learning rate very small after which the iterates wont change much.</p>
+<p>Adadelta improved upon this by using an exponential moving average of the gradients instead of a simple sum.</p>
+<p>The exponential average is defined as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+    E[g^{2}]_{t} = \gamma E[g^{2}]_{t-1} + (1-\gamma)E[g^{2}]_{t-1}
+\]</div>
+<p>when rolled out this becomes</p>
+<div class="math notranslate nohighlight">
+\[
+    E[g^{2}]_{t} = \gamma^{t} E[g^{2}]_{0} + \sum_{j=1}^{t-1} (1-\gamma)^{j}E[g^{2}]_{t-j}
+\]</div>
+<p><em>Algorithm</em></p>
+<ol class="simple">
+<li><p>Compute <span class="math notranslate nohighlight">\(g_{t} = \nabla_{x} f(x_{t})\)</span>, the gradient.</p></li>
+<li><p>Compute <span class="math notranslate nohighlight">\(E[g^{2}]_{t}\)</span> using</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+    \left( E[g^{2}]_{t} \right)_{i,i} = \gamma E[g^{2}]_{t-1} + (1-\gamma)E[g^{2}]_{t-1}
+\]</div>
+<ol class="simple">
+<li><p>Compute the iterate <span class="math notranslate nohighlight">\(x_{t+1,i}\)</span> using
+$<span class="math notranslate nohighlight">\(
+ x_{t+1} = x_{t} - \eta \left( \sqrt{ E[g^{2}]_{t} + \epsilon} \right)^{-1} g_{t}
+\)</span>$</p></li>
+</ol>
+<p>Some points to note:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\eta\)</span> above is the learning rate as in vanilla gradient descent</p></li>
+<li><p><span class="math notranslate nohighlight">\(\epsilon\)</span> is a very small number introduced to prevent division by zero errors</p></li>
+<li><p><span class="math notranslate nohighlight">\(\gamma\)</span> is parameter that has been introduced to control the impact of past gradient on the current step size. This is akin to the momentum term in nesterov accelerated gradient descent.</p></li>
+</ul>
+</div>
+<div class="section" id="adam">
+<h2>Adam<a class="headerlink" href="#adam" title="Permalink to this headline">¶</a></h2>
+<p>Adam stands for Adaptive Moment Estimation.</p>
+<p>Adagrad and Adadelta used the accumalated sum of gradients to adjust the step size at each step. Adam uses the accumalated gradient itself in addition to the accumalated squared gradients to adjust the step size.</p>
+<p>The high level idea is to do the following:</p>
+<ol class="simple">
+<li><p>Compute <span class="math notranslate nohighlight">\(g_{t} = \nabla_{x} f(x_{t})\)</span>, the gradient.</p></li>
+<li><p>Compute <span class="math notranslate nohighlight">\(m_{t}\)</span> and <span class="math notranslate nohighlight">\(v_{t}\)</span> using</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{eqnarray}
+m_{t} = \beta_{1}g_{t-1}^{2} + (1-\beta_{1})g_{t} \\
+v_{t} = \beta_{2}g_{t-1} + (1-\beta_{2})g_{t}
+\end{eqnarray}
+\end{split}\]</div>
+<ol class="simple">
+<li><p>Compute the iterate <span class="math notranslate nohighlight">\(x_{t+1,i}\)</span> using
+$<span class="math notranslate nohighlight">\(
+ x_{t+1} = x_{t} - \eta \left( \sqrt{ m_{t} + \epsilon} \right)^{-1} m_{t}
+\)</span>$</p></li>
+</ol>
+<p>Points to note from the above:</p>
+<ul class="simple">
+<li><p>The <span class="math notranslate nohighlight">\(m_{t}\)</span> term above is the same as the <span class="math notranslate nohighlight">\(E[g^{2}]_{t}\)</span> in Adadelta</p></li>
+<li><p>Instead of multiplying the step size with gradient at the current step, in Adam its multiplied with the exponential running average of the gradients</p></li>
+<li><p>Two parameters <span class="math notranslate nohighlight">\(\beta_{1}\)</span> and <span class="math notranslate nohighlight">\(\beta_{2}\)</span> were introduced to control the impact of recent gradients ( and corresponding squares ) on the updates. They are typically set to 0.9 and 0.999 respectively.</p></li>
+<li><p><span class="math notranslate nohighlight">\(m_{0}\)</span> and <span class="math notranslate nohighlight">\(v_{0}\)</span> are set to zero</p></li>
+</ul>
+<p>The last 2 points above mean that new gradients will take a long time to relfect in the iterates and <span class="math notranslate nohighlight">\(m_{t}\)</span> and <span class="math notranslate nohighlight">\(v_{t}\)</span> would be biased towards zero ( particularly in the initial iterations )</p>
+<p>To correct the zero bias issue, one multiplies <span class="math notranslate nohighlight">\(m_{t}\)</span> and <span class="math notranslate nohighlight">\(v_{t}\)</span> with a factor.</p>
+<p>Define</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{eqnarray}
+\hat m_{t} = \frac{m_{t}}{1-\beta_1^{t}} \\
+\hat v_{t} = \frac{v_{t}}{1-\beta_2^{t}}
+\end{eqnarray}
+\end{split}\]</div>
+<p>The final algorithm looks as follows:</p>
+<p><em>Algorithm</em></p>
+<ol class="simple">
+<li><p>Compute <span class="math notranslate nohighlight">\(g_{t} = \nabla_{x} f(x_{t})\)</span>, the gradient.</p></li>
+<li><p>Compute <span class="math notranslate nohighlight">\(m_{t}\)</span> and <span class="math notranslate nohighlight">\(v_{t}\)</span> using</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+    m_{t} &amp;= \beta_{1} m_{t-1} + (1-\beta_{1})g_{t} \\
+    v_{t} &amp;= \beta_{2} v_{t-1} + (1-\beta_{2})g_{t}^{2}
+\end{align}
+\end{split}\]</div>
+<ol class="simple">
+<li><p>Compute <span class="math notranslate nohighlight">\(\hat m_{t}\)</span> and <span class="math notranslate nohighlight">\(\hat v_{t}\)</span> using</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\hat m_{t} &amp;= \frac{m_{t}}{1-\beta_1^{t}} \\
+\hat v_{t} &amp;= \frac{v_{t}}{1-\beta_2^{t}}
+\end{align}
+\end{split}\]</div>
+<ol class="simple">
+<li><p>Compute the iterate <span class="math notranslate nohighlight">\(x_{t+1,i}\)</span> using the following</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+    x_{t+1} = x_{t} - \frac{\eta}{\left( \sqrt{ \hat m_{t} + \epsilon} \right)} \hat m_{t}
+\]</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./docs"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="momentum.html" title="previous page">Momentum</a>
+    <a class='right-next' id="next-link" href="implementations.html" title="next page">Implementations</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Karthik Vijayakumar<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>
