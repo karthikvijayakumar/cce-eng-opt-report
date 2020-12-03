@@ -1,0 +1,9 @@
+# - file: README
+- file: docs/index
+  sections:
+    - file: docs/gradient_descent
+    - file: docs/convergence_gd
+    - file: docs/lower_bounds_convergence 
+    - file: docs/momentum
+    - file: docs/variations
+    - file: docs/implementations
