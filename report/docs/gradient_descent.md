@@ -63,3 +63,5 @@ Given $\alpha_{0} >= 0, \beta, \eta \epsilon (0,1)$
 $$
     f(x_{k+1}) <= f(x_{k}) - \frac{1}{2} \alpha_{k} \Vert \nabla f(x_{k}) \Vert_{2}^{2}
 $$
+
+One could ask does there need to exist $i$ that satisfies the condition in step 2? In general it might not be feasible. If one assumes that $\nabla f$ is Lipschitz continuous then one can show the existence of a suitable $i$ for each iteration. This is covered under Lemma 1.2 in the following section.

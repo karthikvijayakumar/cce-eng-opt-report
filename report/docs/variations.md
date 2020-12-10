@@ -83,7 +83,8 @@ $$
     \left( E[g^{2}]_{t} \right)_{i,i} = \gamma E[g^{2}]_{t-1} + (1-\gamma)E[g^{2}]_{t-1}
 $$
 
-2. Compute the iterate $x_{t+1,i}$ using 
+2. Compute the iterate $x_{t+1}$ using 
+
 $$
     x_{t+1} = x_{t} - \eta \left( \sqrt{ E[g^{2}]_{t} + \epsilon} \right)^{-1} g_{t}
 $$
@@ -108,8 +109,8 @@ The high level idea is to do the following:
 
 $$
 \begin{eqnarray}
-m_{t} = \beta_{1}g_{t-1}^{2} + (1-\beta_{1})g_{t} \\
-v_{t} = \beta_{2}g_{t-1} + (1-\beta_{2})g_{t}
+m_{t} = \beta_{1}m_{t-1} + (1-\beta_{1})g_{t} \\
+v_{t} = \beta_{2}v_{t-1} + (1-\beta_{2})g_{t}^2
 \end{eqnarray}
 $$
 
@@ -167,3 +168,19 @@ $$
 $$
     x_{t+1} = x_{t} - \frac{\eta}{\left( \sqrt{ \hat m_{t} + \epsilon} \right)} \hat m_{t}
 $$
+
+## Convergence guarantees
+
+In previous sections we showed that gradient descent is guaranteed to converge for certain choice of step sizes. There exist similar guarantees for Nesterov accelerated gradient descent.
+
+One could ask for similar convergence guarantees for variations of momentum like Adam, Adagrad etc.
+
+It turns out that Adam is not guaranteed to converge on all convex problems. A counter example convex problem was shown by [Reddi et. all in 2018](https://arxiv.org/pdf/1904.09237.pdf)
+
+Adam is known to converge under the following conditions stochastically
+
+1. There exists $x_{*}$ such that $f(x_{*}) \leq f(x) \forall x$
+2. The $l_{\inf}$ of the gradient is bounded almost surely
+3. The gradient of the function $\nabla f$ is L-smooth ( Lipschitz continuous with constant L )
+
+A proof of the convergence for both Adam and Adagrad can be found in [Alexandre et. all](https://arxiv.org/pdf/2003.02395.pdf)
