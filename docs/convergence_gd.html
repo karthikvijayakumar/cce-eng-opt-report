@@ -279,7 +279,7 @@
 <p>A function <span class="math notranslate nohighlight">\(f : \mathbb{R}^{n} -&gt; \mathbb{R}\)</span> is Lipschitz continuosu with Lipschitz constant <span class="math notranslate nohighlight">\(L\)</span> if for any <span class="math notranslate nohighlight">\(x,y \epsilon \mathbb{R}^{n}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
-    \Vert f(y) - f(x) \Vert_{2} &lt;= L \Vert y-x \Vert_{2}
+    | f(y) - f(x) | &lt;= L \Vert y-x \Vert_{2}
 \]</div>
 </div>
 <div class="section" id="strong-convexity">
@@ -309,10 +309,11 @@
 <div class="section" id="monotonicity-of-gradient">
 <h3>Monotonicity of gradient<a class="headerlink" href="#monotonicity-of-gradient" title="Permalink to this headline">¶</a></h3>
 <p id="id1"><strong>Lemma 1.1</strong></p>
-<p>A differentiable function <span class="math notranslate nohighlight">\(f : \mathbb{R}^{n} -&gt; \mathbb{R}\)</span> is convex iff
-$<span class="math notranslate nohighlight">\(
+<p>A differentiable function <span class="math notranslate nohighlight">\(f : \mathbb{R}^{n} -&gt; \mathbb{R}\)</span> is convex iff</p>
+<div class="math notranslate nohighlight">
+\[
     (\nabla f(y) - \nabla f(x))^{T}(y-x) &gt;= 0
-\)</span>$</p>
+\]</div>
 <p><strong>Proof</strong></p>
 <p>Part 1: Convexity =&gt; <span class="math notranslate nohighlight">\((\nabla f(y) - \nabla f(x))^{T}(y-x) &gt;= 0\)</span></p>
 <p>If f is convex by first order condition</p>
@@ -323,10 +324,11 @@ f(x) \geq f(y) + \nabla f(y)^{T}(x-y) \\
 f(y) \geq f(x) + \nabla f(x)^{T}(y-x)
 \end{eqnarray}
 \end{split}\]</div>
-<p>Adding the two equations above gives us
-$<span class="math notranslate nohighlight">\(
+<p>Adding the two equations above gives us</p>
+<div class="math notranslate nohighlight">
+\[
     \left( \nabla f(y)^{T} - \nabla f(x)^{T} \right) \left( y-x \right) \geq 0
-\)</span>$</p>
+\]</div>
 <p>Part 2: <span class="math notranslate nohighlight">\((\nabla f(y) - \nabla f(x))^{T}(y-x) &gt;= 0\)</span> =&gt; Convexity</p>
 <p>Consider the restriction of the function f -&gt; <span class="math notranslate nohighlight">\(g_{a,b}\)</span></p>
 <div class="math notranslate nohighlight">
@@ -369,7 +371,7 @@ g'_{a,b}(\alpha) - g'_{a,b}(0) &amp;= \left( \nabla f(\alpha a + (1-\alpha)b) \r
 <p>If the gradient of a function is L-Lipschitz continuous with Lipschitz constant L</p>
 <div class="math notranslate nohighlight">
 \[
-    \Vert \nabla f(y) - \nabla f(x) \Vert_{2} &lt;= \Vert y-x \Vert_{2}
+    \Vert \nabla f(y) - \nabla f(x) \Vert_{2} &lt;= L \Vert y-x \Vert_{2}
 \]</div>
 <p>then for any <span class="math notranslate nohighlight">\(x \epsilon \mathbb{R}^{n}\)</span> the following holds</p>
 <div class="math notranslate nohighlight">
@@ -446,29 +448,31 @@ g'_{a,b}(\alpha) - g'_{a,b}(0) &amp;= \left( \nabla f(\alpha a + (1-\alpha)b) \r
 \[
     f(x_{k+1}) &lt;= f(x_{k}) + \nabla f(x_{k})^{T}(x_{k+1} - x_{k}) + \frac{L}{2} \Vert x_{k+1} - x_{k} \Vert_{2}^{2}
 \]</div>
-<p>In gradient descent the iterates are computed as
-$<span class="math notranslate nohighlight">\(
+<p>In gradient descent the iterates are computed as</p>
+<div class="math notranslate nohighlight">
+\[
     x_{k+1} = x_{k} - \alpha_{k} \nabla f(x_{k})
-\)</span>$</p>
-<p>This implies
-$<span class="math notranslate nohighlight">\(
+\]</div>
+<p>This implies</p>
+<div class="math notranslate nohighlight">
+\[
   x_{k+1} - x_{k} = - \alpha_{k} \nabla f(x_{k})
-\)</span>$</p>
+\]</div>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
     f(x_{k+1}) &amp;\leq f(x_{k}) + \nabla f(x_{k})^{T}(-\alpha_{k}\nabla f(x_{k})) + \frac{L}{2}\alpha_{k}^{2} \Vert \nabla f(x_{k}) \Vert_{2}^{2} \\
-    &amp;\leq f(x_{k}) + \alpha_{k} \Vert \nabla f(x_{k}) \Vert_{2}^{2} + \frac{L}{2}\alpha_{k}^{2} \Vert \nabla f(x_{k}) \Vert_{2}^{2} \\
-    &amp;\leq f(x_{k}) + \alpha_{k} \left( 1- \frac{\alpha_{k} L}{2} \right) \Vert \nabla f(x_{k}) \Vert_{2}^{2} \\
+    &amp;\leq f(x_{k}) - \alpha_{k} \Vert \nabla f(x_{k}) \Vert_{2}^{2} + \frac{L}{2}\alpha_{k}^{2} \Vert \nabla f(x_{k}) \Vert_{2}^{2} \\
+    &amp;\leq f(x_{k}) - \alpha_{k} \left( 1- \frac{\alpha_{k} L}{2} \right) \Vert \nabla f(x_{k}) \Vert_{2}^{2} \\
 \end{align}
 \end{split}\]</div>
 <p>Hence proved</p>
 </div>
 <div class="section" id="gradient-descent-is-a-descent-method">
 <h3>Gradient descent is a descent method<a class="headerlink" href="#gradient-descent-is-a-descent-method" title="Permalink to this headline">¶</a></h3>
-<p id="id4"><strong>Corollary 1.1</strong> Gradient descent is a descent method if <span class="math notranslate nohighlight">\(\alpha_{k} &lt;= \frac{1}{L}\)</span></p>
+<p id="id4"><strong>Corollary 1.1</strong> Gradient descent is a descent method if <span class="math notranslate nohighlight">\(0 \lt \alpha_{k} \lt \frac{2}{L}\)</span></p>
 <p><strong>Proof</strong></p>
-<p>Substituting <span class="math notranslate nohighlight">\(\alpha_{k} \leq \frac{1}{L}\)</span> into the inequality from the above theorem gives us the result</p>
+<p>Substituting <span class="math notranslate nohighlight">\(0 \lt \alpha_{k} \lt \frac{2}{L}\)</span> into the inequality from the above theorem gives us the result</p>
 </div>
 <div class="section" id="convergence-rate-under-lipschitz-continuity">
 <h3>Convergence rate under Lipschitz continuity<a class="headerlink" href="#convergence-rate-under-lipschitz-continuity" title="Permalink to this headline">¶</a></h3>
@@ -493,33 +497,34 @@ $<span class="math notranslate nohighlight">\(
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
-    f(x_{k}) &amp; \leq f(x_{k-1}) - \frac{\alpha_{k-1}}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} \\
-    f(x_{k-1}) &amp; \geq f(x_{k}) + \frac{\alpha_{k-1}}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2}
+    f(x_{k}) &amp; \leq f(x_{k-1}) - \frac{\alpha}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} \\
+    f(x_{k-1}) &amp; \geq f(x_{k}) + \frac{\alpha}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2}
 \end{align}
 \end{split}\]</div>
 <p>Combining the two</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
-f(x_{k}) + \frac{\alpha_{k-1}}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} + \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) \leq f(x_{*}) \\
-f(x_{k}) - f(x_{*}) \leq \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) - \frac{\alpha_{k-1}}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} \\
+f(x_{k}) + \frac{\alpha}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} + \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) \leq f(x_{*}) \\
+f(x_{k}) - f(x_{*}) \leq \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) - \frac{\alpha}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} \\
 \end{align}
 \end{split}\]</div>
 <p>Lets expand the RHS term</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align}
-    RHS &amp;= \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) - \frac{\alpha_{k-1}}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} \\
+    RHS &amp;= \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) - \frac{\alpha}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} \\
     &amp;= \frac{1}{2\alpha} \left( 2\alpha \nabla f(x_{k-1})^{T}(x_{k-1} - x_{*}) - \alpha^{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2}  \right) \\
     &amp;= \frac{1}{2\alpha} \left( \Vert x_{k-1} - x_{*} \Vert_{2}^{2} - \Vert x_{k-1} - x_{*} \Vert_{2}^{2} + 2\alpha \nabla f(x_{k-1})^{T}(x_{k-1} - x_{*}) -\alpha^{2} \Vert \nabla f(x_{k-1})\Vert_{2}^{2} \right) \\
     &amp;= \frac{1}{2\alpha} \left( \Vert x_{k-1} - x_{*} \Vert_{2}^{2} - \Vert x_{k-1} - x_{*} - \alpha \nabla f(x_{k-1}) \Vert_{2}^{2}  \right) \\
     &amp;= \frac{1}{2\alpha} \left( \Vert x_{k-1}-x_{*} \Vert_{2}^{2} - \Vert x_{k}-x_{*} \Vert_{2}^{2} \right)
 \end{align}
 \end{split}\]</div>
-<p>Hence we have
-$<span class="math notranslate nohighlight">\(
+<p>Hence we have</p>
+<div class="math notranslate nohighlight">
+\[
     f(x_{k}) - f(x_{*}) \leq \frac{1}{2\alpha} \left( \Vert x_{k-1}-x_{*} \Vert_{2}^{2} - \Vert x_{k}-x_{*} \Vert_{2}^{2} \right)
-\)</span>$</p>
+\]</div>
 <p>By previous corollary we know that <span class="math notranslate nohighlight">\(\left( f(x_{k}) \right)_{k=1}^{\inf}\)</span> is decreasing, hence</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -527,28 +532,72 @@ $<span class="math notranslate nohighlight">\(
     f(x_{k}) &amp; \leq \sum_{i=1}^{k} \frac{1}{k} f(x_{i}) \\
     f(x_{k}) - f(x_{*}) &amp; \leq \left[  \sum_{i=1}^{k} \frac{1}{k} f(x_{i}) \right]  - f(x_{*}) \\
     &amp;= \frac{1}{k} \left( \sum_{i=1}^{k} f(x_{i}) -f(x_{*}) \right) \\
-    &amp;= \frac{1}{2 \alpha_{min} k} \left( \Vert x_{0}-x_{*} \Vert_{2}^{2} - \Vert x_{k}-x_{*} \Vert_{2}^{2} \right) \\
-    &amp; \leq \frac{\Vert x_{0} - x_{*} \Vert_{2}^{2}}{2 \alpha_{min} k}
+    &amp;= \frac{1}{2 \alpha k} \left( \Vert x_{0}-x_{*} \Vert_{2}^{2} - \Vert x_{k}-x_{*} \Vert_{2}^{2} \right) \\
+    &amp; \leq \frac{\Vert x_{0} - x_{*} \Vert_{2}^{2}}{2 \alpha k}
 \end{align}
 \end{split}\]</div>
 <p>Hence we have</p>
 <div class="math notranslate nohighlight">
 \[
-    f(x_{k}) - f(x_{*}) \leq \frac{\Vert x_{0} - x_{*} \Vert_{2}^{2}}{2 \alpha_{min} k}
+    f(x_{k}) - f(x_{*}) \leq \frac{\Vert x_{0} - x_{*} \Vert_{2}^{2}}{2 \alpha k}
 \]</div>
 <p>Theorem 1.3 shows that if we know the Lipschitz constant of the gradient then we can choose a fixed step <span class="math notranslate nohighlight">\(\alpha\)</span> to get arbitrarily close to the minimum. In particular to get an <span class="math notranslate nohighlight">\(\epsilon\)</span> approximate solution we would need <span class="math notranslate nohighlight">\(O(\frac{1}{\epsilon})\)</span> steps</p>
+<hr class="docutils" />
+<p><strong>Note: Why we need constant <span class="math notranslate nohighlight">\(\alpha_{k} = \frac{1}{L}\)</span></strong></p>
+<p>We previously showed that gradient descent is a descent method when <span class="math notranslate nohighlight">\(0 \lt \alpha_{k} \lt \frac{2}{L}\)</span>. However we are using <span class="math notranslate nohighlight">\(\alpha_{k} = \frac{1}{L}\)</span> here. One may wonder why that is the case.</p>
+<p>Say <span class="math notranslate nohighlight">\(\alpha_{k} = \frac{2}{L} - \epsilon_{k}\)</span> and <span class="math notranslate nohighlight">\(\epsilon_{min} = min_{k} \epsilon_{k} \gt 0\)</span>. Then repeating parts of the above proof we get</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+    f(x_{k}) &amp; \leq f(x_{k-1}) - \alpha_{k} \left( 1 - \frac{\alpha_{k}L}{2} \right) \Vert \nabla f(x_{k-1}) \Vert^{2} \\
+    f(x_{k}) - f(x_{k-1}) &amp; \leq \frac{-\alpha_{k}L\epsilon_{min}}{2} \Vert \nabla f(x_{k-1}) \Vert^{2} \\
+    f(x_{k-1}) &amp; \geq f(x_{k}) + \frac{\alpha_{k}L\epsilon_{min}}{2} \Vert \nabla f(x_{k-1}) \Vert^{2} \\ 
+\end{align}
+\end{split}\]</div>
+<p>By first order condition for convexity</p>
+<div class="math notranslate nohighlight">
+\[
+    f(x_{k-1}) \leq f(x_{*}) - \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1})
+\]</div>
+<p>Combining the two we have</p>
+<div class="math notranslate nohighlight">
+\[
+   f(x_{k}) + \frac{\alpha_{k}L\epsilon_{min}}{2} \Vert \nabla f(x_{k-1}) \Vert^{2} \leq f(x_{k-1}) \leq f(x_{*}) - \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1})
+\]</div>
+<p>Hence</p>
+<div class="math notranslate nohighlight">
+\[
+   f(x_{k}) + \frac{\alpha_{k}L\epsilon_{min}}{2} \Vert \nabla f(x_{k-1}) \Vert^{2} \leq f(x_{*}) - \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) 
+\]</div>
+<p>This leads to</p>
+<div class="math notranslate nohighlight">
+\[
+    f(x_{k}) - f(x_{*}) \leq \frac{1}{2\alpha_{k-1}L\epsilon_{min}} \left( \Vert x_{k-1}-x_{*} \Vert^{2} - \Vert x_{k-1} - \alpha_{k}L\epsilon_{min} \nabla f(x_{k-1}) - x_{*} \Vert^{2} \right)
+\]</div>
+<p>When <span class="math notranslate nohighlight">\(\alpha_{k} = \frac{1}{L}\)</span> then <span class="math notranslate nohighlight">\(\epsilon_{k} = \epsilon_{min} = \frac{1}{L}\)</span>, the expression on the right becomes</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+   RHS &amp;= \Vert x_{k-1} - \alpha_{k}L\epsilon_{min} \nabla f(x_{k-1}) - x_{*} \Vert^{2} \\
+   &amp;= \Vert x_{k-1} - \alpha_{k} \nabla f(x_{k-1}) - x_{*} \Vert^{2} \\
+   &amp; = \Vert x_{k} - x_{*} \Vert^{2}
+\end{align}
+\end{split}\]</div>
+<p>To leverage that <span class="math notranslate nohighlight">\(x_{k} = x_{k-1} - \alpha_{k} \nabla f(x_{k-1})\)</span> we need <span class="math notranslate nohighlight">\(L\epsilon_{min} = 1\)</span> or <span class="math notranslate nohighlight">\(\epsilon_{min} = \frac{1}{L}\)</span>. This would imply <span class="math notranslate nohighlight">\(\alpha_{k} \leq \frac{1}{L}\)</span>. We want the highest learning rate possible with guarantees of convergence. Hence we choose <span class="math notranslate nohighlight">\(\alpha_{k} = \frac{1}{L}\)</span> constant.</p>
+<hr class="docutils" />
 <p>In practice we may not know the Lipschitz constant of a function analytically. In which case there are 2 ways to proceed forward:</p>
 <ol class="simple">
 <li><p>Find an upper bound for the Lipschitz constant if possible</p></li>
 <li><p>Use backtracking line search ( Armijo rule  )
-We can show that bactracking line search is capable of hitting the <span class="math notranslate nohighlight">\(\alpha_{k} &lt;= \frac{1}{L}\)</span> condition</p></li>
+We can show that backtracking line search is capable of hitting the <span class="math notranslate nohighlight">\(\alpha_{k} &lt;= \frac{1}{L}\)</span> condition</p></li>
 </ol>
 <p>For the latter we have the following results</p>
 <p><strong>Lemma 1.2</strong> Lower bound on step size with backtracking search</p>
-<p>If the gradient of a function <span class="math notranslate nohighlight">\(f: \mathbb{R}^{n} -&gt; \mathbb{R}\)</span> is Lipschitz continuous with Lipschitz constant L, the step size obtained by backtracking line search with <span class="math notranslate nohighlight">\(\eta = 0.5\)</span> satisfies
-$<span class="math notranslate nohighlight">\(
+<p>If the gradient of a function <span class="math notranslate nohighlight">\(f: \mathbb{R}^{n} -&gt; \mathbb{R}\)</span> is Lipschitz continuous with Lipschitz constant L, the step size obtained by backtracking line search with <span class="math notranslate nohighlight">\(\eta = 0.5\)</span> satisfies</p>
+<div class="math notranslate nohighlight">
+\[
     \alpha_{k} &gt;= \alpha_{min} := min \left( \alpha^{0}, \frac{\beta}{L} \right) 
-\)</span>$</p>
+\]</div>
 <p><strong>Theorem 1.4</strong> Convergence with backtracking line search</p>
 <p>If f is convex and <span class="math notranslate nohighlight">\(\nabla f\)</span> is L-Lipschitz continuous, gradient descent with backtracking line search produces a sequence of points that satisfy</p>
 <div class="math notranslate nohighlight">

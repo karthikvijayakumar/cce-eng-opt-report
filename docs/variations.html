@@ -224,6 +224,11 @@
    Adam
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convergence-guarantees">
+   Convergence guarantees
+  </a>
+ </li>
 </ul>
 
         </nav>
@@ -299,11 +304,12 @@ $<span class="math notranslate nohighlight">\(
     \left( E[g^{2}]_{t} \right)_{i,i} = \gamma E[g^{2}]_{t-1} + (1-\gamma)E[g^{2}]_{t-1}
 \]</div>
 <ol class="simple">
-<li><p>Compute the iterate <span class="math notranslate nohighlight">\(x_{t+1,i}\)</span> using
-$<span class="math notranslate nohighlight">\(
- x_{t+1} = x_{t} - \eta \left( \sqrt{ E[g^{2}]_{t} + \epsilon} \right)^{-1} g_{t}
-\)</span>$</p></li>
+<li><p>Compute the iterate <span class="math notranslate nohighlight">\(x_{t+1}\)</span> using</p></li>
 </ol>
+<div class="math notranslate nohighlight">
+\[
+    x_{t+1} = x_{t} - \eta \left( \sqrt{ E[g^{2}]_{t} + \epsilon} \right)^{-1} g_{t}
+\]</div>
 <p>Some points to note:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\eta\)</span> above is the learning rate as in vanilla gradient descent</p></li>
@@ -323,8 +329,8 @@ $<span class="math notranslate nohighlight">\(
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{eqnarray}
-m_{t} = \beta_{1}g_{t-1}^{2} + (1-\beta_{1})g_{t} \\
-v_{t} = \beta_{2}g_{t-1} + (1-\beta_{2})g_{t}
+m_{t} = \beta_{1}m_{t-1} + (1-\beta_{1})g_{t} \\
+v_{t} = \beta_{2}v_{t-1} + (1-\beta_{2})g_{t}^2
 \end{eqnarray}
 \end{split}\]</div>
 <ol class="simple">
@@ -380,6 +386,19 @@ $<span class="math notranslate nohighlight">\(
 \[
     x_{t+1} = x_{t} - \frac{\eta}{\left( \sqrt{ \hat m_{t} + \epsilon} \right)} \hat m_{t}
 \]</div>
+</div>
+<div class="section" id="convergence-guarantees">
+<h2>Convergence guarantees<a class="headerlink" href="#convergence-guarantees" title="Permalink to this headline">¶</a></h2>
+<p>In previous sections we showed that gradient descent is guaranteed to converge for certain choice of step sizes. There exist similar guarantees for Nesterov accelerated gradient descent.</p>
+<p>One could ask for similar convergence guarantees for variations of momentum like Adam, Adagrad etc.</p>
+<p>It turns out that Adam is not guaranteed to converge on all convex problems. A counter example convex problem was shown by <a class="reference external" href="https://arxiv.org/pdf/1904.09237.pdf">Reddi et. all in 2018</a></p>
+<p>Adam is known to converge under the following conditions stochastically</p>
+<ol class="simple">
+<li><p>There exists <span class="math notranslate nohighlight">\(x_{*}\)</span> such that <span class="math notranslate nohighlight">\(f(x_{*}) \leq f(x) \forall x\)</span></p></li>
+<li><p>The <span class="math notranslate nohighlight">\(l_{\inf}\)</span> of the gradient is bounded almost surely</p></li>
+<li><p>The gradient of the function <span class="math notranslate nohighlight">\(\nabla f\)</span> is L-smooth ( Lipschitz continuous with constant L )</p></li>
+</ol>
+<p>A proof of the convergence for both Adam and Adagrad can be found in <a class="reference external" href="https://arxiv.org/pdf/2003.02395.pdf">Alexandre et. all</a></p>
 </div>
 </div>
 

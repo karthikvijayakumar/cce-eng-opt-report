@@ -23,7 +23,7 @@ A general analysis on the convergence of gradient descent can prove to be very d
 A function $f : \mathbb{R}^{n} -> \mathbb{R}$ is Lipschitz continuosu with Lipschitz constant $L$ if for any $x,y \epsilon \mathbb{R}^{n}$
 
 $$
-    \Vert f(y) - f(x) \Vert_{2} <= L \Vert y-x \Vert_{2}
+    | f(y) - f(x) | <= L \Vert y-x \Vert_{2}
 $$
 
 ## Strong convexity
@@ -63,6 +63,7 @@ We need a few results to help us with the proof
 **Lemma 1.1** 
 
 A differentiable function $f : \mathbb{R}^{n} -> \mathbb{R}$ is convex iff
+
 $$
     (\nabla f(y) - \nabla f(x))^{T}(y-x) >= 0
 $$
@@ -81,6 +82,7 @@ f(y) \geq f(x) + \nabla f(x)^{T}(y-x)
 $$
 
 Adding the two equations above gives us
+
 $$
     \left( \nabla f(y)^{T} - \nabla f(x)^{T} \right) \left( y-x \right) \geq 0
 $$
@@ -132,7 +134,7 @@ This is the first order condition for convexity => f is convex
 If the gradient of a function is L-Lipschitz continuous with Lipschitz constant L
 
 $$
-    \Vert \nabla f(y) - \nabla f(x) \Vert_{2} <= \Vert y-x \Vert_{2}
+    \Vert \nabla f(y) - \nabla f(x) \Vert_{2} <= L \Vert y-x \Vert_{2}
 $$
 
 then for any $x \epsilon \mathbb{R}^{n}$ the following holds
@@ -225,11 +227,13 @@ $$
 $$
 
 In gradient descent the iterates are computed as
+
 $$
     x_{k+1} = x_{k} - \alpha_{k} \nabla f(x_{k})
 $$
 
 This implies
+
 $$
   x_{k+1} - x_{k} = - \alpha_{k} \nabla f(x_{k})
 $$
@@ -238,8 +242,8 @@ $$
 $$
 \begin{align}
     f(x_{k+1}) &\leq f(x_{k}) + \nabla f(x_{k})^{T}(-\alpha_{k}\nabla f(x_{k})) + \frac{L}{2}\alpha_{k}^{2} \Vert \nabla f(x_{k}) \Vert_{2}^{2} \\
-    &\leq f(x_{k}) + \alpha_{k} \Vert \nabla f(x_{k}) \Vert_{2}^{2} + \frac{L}{2}\alpha_{k}^{2} \Vert \nabla f(x_{k}) \Vert_{2}^{2} \\
-    &\leq f(x_{k}) + \alpha_{k} \left( 1- \frac{\alpha_{k} L}{2} \right) \Vert \nabla f(x_{k}) \Vert_{2}^{2} \\
+    &\leq f(x_{k}) - \alpha_{k} \Vert \nabla f(x_{k}) \Vert_{2}^{2} + \frac{L}{2}\alpha_{k}^{2} \Vert \nabla f(x_{k}) \Vert_{2}^{2} \\
+    &\leq f(x_{k}) - \alpha_{k} \left( 1- \frac{\alpha_{k} L}{2} \right) \Vert \nabla f(x_{k}) \Vert_{2}^{2} \\
 \end{align}
 $$
 
@@ -248,11 +252,11 @@ Hence proved
 ### Gradient descent is a descent method
 (gradient_descent_is_a_descent_method)=
 
-**Corollary 1.1** Gradient descent is a descent method if $\alpha_{k} <= \frac{1}{L}$
+**Corollary 1.1** Gradient descent is a descent method if $0 \lt \alpha_{k} \lt \frac{2}{L}$
 
 **Proof**
 
-Substituting $\alpha_{k} \leq \frac{1}{L}$ into the inequality from the above theorem gives us the result
+Substituting $0 \lt \alpha_{k} \lt \frac{2}{L}$ into the inequality from the above theorem gives us the result
 
 ### Convergence rate under Lipschitz continuity
 (convergence_rate_under_lipschitz)=
@@ -281,8 +285,8 @@ Using the previous corollary
 
 $$
 \begin{align}
-    f(x_{k}) & \leq f(x_{k-1}) - \frac{\alpha_{k-1}}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} \\
-    f(x_{k-1}) & \geq f(x_{k}) + \frac{\alpha_{k-1}}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2}
+    f(x_{k}) & \leq f(x_{k-1}) - \frac{\alpha}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} \\
+    f(x_{k-1}) & \geq f(x_{k}) + \frac{\alpha}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2}
 \end{align}
 $$
 
@@ -290,8 +294,8 @@ Combining the two
 
 $$
 \begin{align}
-f(x_{k}) + \frac{\alpha_{k-1}}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} + \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) \leq f(x_{*}) \\
-f(x_{k}) - f(x_{*}) \leq \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) - \frac{\alpha_{k-1}}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} \\
+f(x_{k}) + \frac{\alpha}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} + \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) \leq f(x_{*}) \\
+f(x_{k}) - f(x_{*}) \leq \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) - \frac{\alpha}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} \\
 \end{align}
 $$
 
@@ -299,7 +303,7 @@ Lets expand the RHS term
 
 $$
 \begin{align}
-    RHS &= \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) - \frac{\alpha_{k-1}}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} \\
+    RHS &= \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) - \frac{\alpha}{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2} \\
     &= \frac{1}{2\alpha} \left( 2\alpha \nabla f(x_{k-1})^{T}(x_{k-1} - x_{*}) - \alpha^{2} \Vert \nabla f(x_{k-1}) \Vert_{2}^{2}  \right) \\
     &= \frac{1}{2\alpha} \left( \Vert x_{k-1} - x_{*} \Vert_{2}^{2} - \Vert x_{k-1} - x_{*} \Vert_{2}^{2} + 2\alpha \nabla f(x_{k-1})^{T}(x_{k-1} - x_{*}) -\alpha^{2} \Vert \nabla f(x_{k-1})\Vert_{2}^{2} \right) \\
     &= \frac{1}{2\alpha} \left( \Vert x_{k-1} - x_{*} \Vert_{2}^{2} - \Vert x_{k-1} - x_{*} - \alpha \nabla f(x_{k-1}) \Vert_{2}^{2}  \right) \\
@@ -308,6 +312,7 @@ $$
 $$
 
 Hence we have
+
 $$
     f(x_{k}) - f(x_{*}) \leq \frac{1}{2\alpha} \left( \Vert x_{k-1}-x_{*} \Vert_{2}^{2} - \Vert x_{k}-x_{*} \Vert_{2}^{2} \right)
 $$
@@ -319,30 +324,85 @@ $$
     f(x_{k}) & \leq \sum_{i=1}^{k} \frac{1}{k} f(x_{i}) \\
     f(x_{k}) - f(x_{*}) & \leq \left[  \sum_{i=1}^{k} \frac{1}{k} f(x_{i}) \right]  - f(x_{*}) \\
     &= \frac{1}{k} \left( \sum_{i=1}^{k} f(x_{i}) -f(x_{*}) \right) \\
-    &= \frac{1}{2 \alpha_{min} k} \left( \Vert x_{0}-x_{*} \Vert_{2}^{2} - \Vert x_{k}-x_{*} \Vert_{2}^{2} \right) \\
-    & \leq \frac{\Vert x_{0} - x_{*} \Vert_{2}^{2}}{2 \alpha_{min} k}
+    &= \frac{1}{2 \alpha k} \left( \Vert x_{0}-x_{*} \Vert_{2}^{2} - \Vert x_{k}-x_{*} \Vert_{2}^{2} \right) \\
+    & \leq \frac{\Vert x_{0} - x_{*} \Vert_{2}^{2}}{2 \alpha k}
 \end{align}
 $$
 
 Hence we have
 
 $$
-    f(x_{k}) - f(x_{*}) \leq \frac{\Vert x_{0} - x_{*} \Vert_{2}^{2}}{2 \alpha_{min} k}
+    f(x_{k}) - f(x_{*}) \leq \frac{\Vert x_{0} - x_{*} \Vert_{2}^{2}}{2 \alpha k}
 $$
 
 Theorem 1.3 shows that if we know the Lipschitz constant of the gradient then we can choose a fixed step $\alpha$ to get arbitrarily close to the minimum. In particular to get an $\epsilon$ approximate solution we would need $O(\frac{1}{\epsilon})$ steps
+
+---
+
+**Note: Why we need constant $\alpha_{k} = \frac{1}{L}$**
+
+We previously showed that gradient descent is a descent method when $0 \lt \alpha_{k} \lt \frac{2}{L}$. However we are using $\alpha_{k} = \frac{1}{L}$ here. One may wonder why that is the case.
+
+Say $\alpha_{k} = \frac{2}{L} - \epsilon_{k}$ and $\epsilon_{min} = min_{k} \epsilon_{k} \gt 0$. Then repeating parts of the above proof we get
+
+$$
+\begin{align}
+    f(x_{k}) & \leq f(x_{k-1}) - \alpha_{k} \left( 1 - \frac{\alpha_{k}L}{2} \right) \Vert \nabla f(x_{k-1}) \Vert^{2} \\
+    f(x_{k}) - f(x_{k-1}) & \leq \frac{-\alpha_{k}L\epsilon_{min}}{2} \Vert \nabla f(x_{k-1}) \Vert^{2} \\
+    f(x_{k-1}) & \geq f(x_{k}) + \frac{\alpha_{k}L\epsilon_{min}}{2} \Vert \nabla f(x_{k-1}) \Vert^{2} \\ 
+\end{align}
+$$
+
+By first order condition for convexity
+
+$$
+    f(x_{k-1}) \leq f(x_{*}) - \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1})
+$$
+
+Combining the two we have
+
+$$
+   f(x_{k}) + \frac{\alpha_{k}L\epsilon_{min}}{2} \Vert \nabla f(x_{k-1}) \Vert^{2} \leq f(x_{k-1}) \leq f(x_{*}) - \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1})
+$$
+
+Hence
+
+$$
+   f(x_{k}) + \frac{\alpha_{k}L\epsilon_{min}}{2} \Vert \nabla f(x_{k-1}) \Vert^{2} \leq f(x_{*}) - \nabla f(x_{k-1})^{T}(x_{*} - x_{k-1}) 
+$$
+
+This leads to 
+
+$$
+    f(x_{k}) - f(x_{*}) \leq \frac{1}{2\alpha_{k-1}L\epsilon_{min}} \left( \Vert x_{k-1}-x_{*} \Vert^{2} - \Vert x_{k-1} - \alpha_{k}L\epsilon_{min} \nabla f(x_{k-1}) - x_{*} \Vert^{2} \right)
+$$
+
+When $\alpha_{k} = \frac{1}{L}$ then $\epsilon_{k} = \epsilon_{min} = \frac{1}{L}$, the expression on the right becomes
+
+$$
+\begin{align}
+   RHS &= \Vert x_{k-1} - \alpha_{k}L\epsilon_{min} \nabla f(x_{k-1}) - x_{*} \Vert^{2} \\
+   &= \Vert x_{k-1} - \alpha_{k} \nabla f(x_{k-1}) - x_{*} \Vert^{2} \\
+   & = \Vert x_{k} - x_{*} \Vert^{2}
+\end{align}
+$$
+
+To leverage that $x_{k} = x_{k-1} - \alpha_{k} \nabla f(x_{k-1})$ we need $L\epsilon_{min} = 1$ or $\epsilon_{min} = \frac{1}{L}$. This would imply $\alpha_{k} \leq \frac{1}{L}$. We want the highest learning rate possible with guarantees of convergence. Hence we choose $\alpha_{k} = \frac{1}{L}$ constant.
+
+---
 
 In practice we may not know the Lipschitz constant of a function analytically. In which case there are 2 ways to proceed forward:
 
 1. Find an upper bound for the Lipschitz constant if possible
 2. Use backtracking line search ( Armijo rule  )
-    We can show that bactracking line search is capable of hitting the $\alpha_{k} <= \frac{1}{L}$ condition
+    We can show that backtracking line search is capable of hitting the $\alpha_{k} <= \frac{1}{L}$ condition
 
 For the latter we have the following results
 
 **Lemma 1.2** Lower bound on step size with backtracking search
 
 If the gradient of a function $f: \mathbb{R}^{n} -> \mathbb{R}$ is Lipschitz continuous with Lipschitz constant L, the step size obtained by backtracking line search with $\eta = 0.5$ satisfies
+
 $$
     \alpha_{k} >= \alpha_{min} := min \left( \alpha^{0}, \frac{\beta}{L} \right) 
 $$
