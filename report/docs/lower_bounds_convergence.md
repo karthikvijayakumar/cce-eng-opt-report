@@ -61,4 +61,4 @@ The above theorem implies using first order methods we can need $O\left( \frac{1
 
 Infact Nesterov's showed that the convergence $O\left( \frac{1}{\sqrt \epsilon} \right)$ is optimal and gave the algorithm for it, which is accelerated gradient descent
 
-The proof of the Nesterov's theorem is quite involved and we will skip it here. Details can be found in [section 2.1.2 of Nesterov's test](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.693.855&rep=rep1&type=pdf)
+The proof of the Nesterov's theorem is quite involved and we will skip it here. Details can be found in [section 2.1.2 of Nesterov's text](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.693.855&rep=rep1&type=pdf)
